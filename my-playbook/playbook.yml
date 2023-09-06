@@ -1,0 +1,23 @@
+---
+- name: Showmik's youtube
+  hosts: all
+  become: yes
+  tasks: 
+    - name: Install HTTPD Service
+      yum:
+        name: httpd
+        state: present
+    - name: Start HTTPD Service
+      service:
+        name: httpd
+        state: started
+    - name: Check HTPPD Status
+      command: service httpd status
+      register: service_output
+    - name: Print HTPPD Status
+      debug:
+        var: service_output.stdout
+    - name: Copy Code to Target Server
+      copy:
+        src: index.html
+        dest: /var/www/html/
